@@ -31,8 +31,7 @@
 #       Notice that this function doesn't to return anything because it  
 #       prints a summary of the results using results_dic and results_stats_dic
 # 
-def print_results(results_dic, results_stats_dic, model, 
-                  print_incorrect_dogs = False, print_incorrect_breed = False):
+def print_results(results_dict, results_stats, model, print_incorrect_dogs=False, print_incorrect_breed=False):
     """
     Prints summary results on the classification and then prints incorrectly 
     classified dogs and incorrectly classified dog breeds if user indicates 
@@ -62,31 +61,26 @@ def print_results(results_dic, results_stats_dic, model,
     Returns:
            None - simply printing results.
     """    
- # Print summary statistics
-    print("\n\n*** Results Summary for CNN Model Architecture", model.upper(), "***")
-    print("{:20}: {:3d}".format('N Images', results_stats_dic['n_images']))
-    print("{:20}: {:3d}".format('N Dog Images', results_stats_dic['n_dogs_img']))
-    print("{:20}: {:3d}".format('N Not-Dog Images', results_stats_dic['n_notdogs_img']))
+  print(f"\n\n*** Results Summary for CNN Model Architecture {model.upper()} ***")
+    print(f"{'N Images':20}: {results_stats['n_images']:3d}")
+    print(f"{'N Dog Images':20}: {results_stats['n_dogs_img']:3d}")
+    print(f"{'N Not-Dog Images':20}: {results_stats['n_notdogs_img']:3d}")
     print(" ")
-    print("{:20}: {:.2f}".format('% Correct Dogs', results_stats_dic['pct_correct_dogs']))
-    print("{:20}: {:.2f}".format('% Correct Breed', results_stats_dic['pct_correct_breed']))
-    print("{:20}: {:.2f}".format('% Correct "Not-a" Dog', results_stats_dic['pct_correct_notdogs']))
-    
-    print(" ")
-    for key in results_stats_dic:
-        if key.startswith('pct'):
-            print("{}: {:.2f}".format(key, results_stats_dic[key]))
-            
-    # Print incorrect dog/not-dog assignments if applicable
-    if print_incorrect_dogs and ((results_stats_dic['n_correct_dogs'] + results_stats_dic['n_correct_notdogs']) != results_stats_dic['n_images']):
+
+    for stat_name, stat_value in results_stats.items():
+        if stat_name.startswith('p'):
+            print(f"{stat_name}: {stat_value}")
+
+    # Print incorrectly classified dogs/not dogs
+    if print_incorrect_dogs and (results_stats['n_correct_dogs'] + results_stats['n_correct_notdogs']) != results_stats['n_images']:
         print("\nINCORRECT Dog/NOT Dog Assignments:")
-        for key in results_dic:
-            if sum(results_dic[key][3:]) == 1:
-                print("Real: {:>26}   Classifier: {:>30}".format(results_dic[key][0], results_dic[key][1]))
-    
-    # Print incorrect breed assignments if applicable
-    if print_incorrect_breed and (results_stats_dic['n_correct_dogs'] != results_stats_dic['n_correct_breed']):
+        for filename, result in results_dict.items():
+            if sum(result[3:]) == 1:
+                print(f"Real: {result[0]:>26}   Classifier: {result[1]:>30}")
+
+    # Print incorrectly classified dog breeds
+    if print_incorrect_breed and results_stats['n_correct_dogs'] != results_stats['n_correct_breed']:
         print("\nINCORRECT Dog Breed Assignment:")
-        for key in results_dic:
-            if sum(results_dic[key][3:]) == 2 and results_dic[key][2] == 0:
-                print("Real: {:>26}   Classifier: {:>30}".format(results_dic[key][0], results_dic[key][1]))
+        for filename, result in results_dict.items():
+            if sum(result[3:]) == 2 and result[2] == 0:
+                print(f"Real: {result[0]:>26}   Classifier: {result[1]:>30}")
