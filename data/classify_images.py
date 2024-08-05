@@ -29,7 +29,7 @@ from classifier import classifier
 #       results_dic dictionary that is passed into the function is a mutable 
 #       data type so no return is needed.
 # 
-def classify_images(images_dir, results_dic, model):
+def classify_images(images_dir, results_data, model):
     """
     Creates classifier labels with classifier function, compares pet labels to 
     the classifier labels, and adds the classifier label and the comparison of 
@@ -65,20 +65,17 @@ def classify_images(images_dir, results_dic, model):
      Returns:
            None - results_dic is mutable data type so no return needed.         
     """
-    for key in results_dic:
-        # Run classifier function to get model label
-        classified = classifier(images_dir + '/' + key, model)
-        
-        # Process the classifier's output
-        model_label = classified.lower().strip()
-        
-        # Append model_label to results_dic
-        truth = results_dic[key][0]
-        
-        # Check if the truth label is in the model's label
-        if truth in model_label:
-            results_dic[key].extend((model_label, 1))
+    for filename, data in results_data.items():
+        image_path = os.path.join(images_dir, filename)
+        predicted_label = classifier(image_path, model).lower().strip()
+
+        pet_label = data[0].lower()
+
+        if pet_label in predicted_label:
+            match_result = 1
         else:
-            results_dic[key].extend((model_label, 0))
-        
-    print(results_dic)
+            match_result = 0
+
+        results_data[filename].extend([predicted_label, match_result])
+
+    return None
