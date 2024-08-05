@@ -39,7 +39,7 @@ def get_input_args():
      parse_args() -data structure that stores the command line arguments object  
     """
     # Instantiate the parser
-    parser = argparse.ArgumentParser(description="Process some command line arguments.")
+    parser = argparse.ArgumentParser()
     
     
    # Define command line arguments
