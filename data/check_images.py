@@ -52,7 +52,7 @@ def main():
     
 
     # Function that checks command line arguments using in_arg  
-    check_command_line_arguments(in_arg)
+    #check_command_line_arguments(in_arg)
 
     
     # TODO 2: Define get_pet_labels function within the file get_pet_labels.py
