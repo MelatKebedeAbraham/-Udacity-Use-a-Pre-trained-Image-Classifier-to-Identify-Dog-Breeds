@@ -41,34 +41,30 @@ def get_pet_labels(image_dir):
       List. The list contains for following item:
          index 0 = pet image label (string)
     """
-    # Replace None with the results_dic dictionary that you created with this
-    # function
-    in_files = listdir(image_dir)
-    results_dic = dict()
+    # Retrieve the list of files in the directory
+    in_files = os.listdir(image_dir)
+    results_dic = {}
 
-    for idx in range(0, len(in_files), 1):
-       
-       # Skips file if starts with . (like .DS_Store of Mac OSX) because it 
-       # isn't an pet image file
-       if in_files[idx][0] != ".":
+    for file_name in in_files:
+        # Skip any file that starts with a period (e.g., .DS_Store on Mac)
+        if file_name[0] != ".":
+            # Convert filename to lowercase and split on underscores
+            low_pet_image = file_name.lower()
+            word_list_pet_image = low_pet_image.split("_")
 
-           # TODO: 2a. BELOW REPLACE pass with CODE that will process each 
-           # filename in the in_files list to extract the dog breed 
-           # name from the filename. Recall that each filename can be
-           # accessed by in_files[idx]. Be certain to place the 
-           # extracted dog breed name in the variable pet_label 
-           # that's created as an empty string ABOVE
-           low_pet_image = in_files[idx].lower()
-           word_list_pet_image = low_pet_image.split("_")
-           pet_name = ""
-           for word in word_list_pet_image:
-               if word.isalpha():
-                   pet_name += word + " "
-           pet_name = pet_name.strip()
-           if in_files[idx] not in results_dic:
-              results_dic[in_files[idx]] = [pet_name]
-              
-           else:
-               print("** Warning: Duplicate files exist in directory:", 
-                     in_files[idx])   
-    return results_dic    
+            # Initialize pet_name as an empty string and concatenate only alphabetic words
+            pet_name = ""
+            for word in word_list_pet_image:
+                if word.isalpha():
+                    pet_name += word + " "
+            
+            # Remove any leading/trailing whitespace
+            pet_name = pet_name.strip()
+
+            # Add the filename and pet_name to the results dictionary
+            if file_name not in results_dic:
+                results_dic[file_name] = [pet_name]
+            else:
+                print(f"** Warning: Duplicate files exist in directory: {file_name}")
+    
+    return results_dic
