@@ -68,9 +68,9 @@ def adjust_results4_isadog(results_dic, dogfile):
            None - results_dic is mutable data type so no return needed.
     """           
     
-     dognames_dic = dict()
+    dognames_dic = dict()
     
-     with open(dogfile, "r") as infile:
+    with open(dogfile, "r") as infile:
         line = infile.readline()
         
         while line != "":
