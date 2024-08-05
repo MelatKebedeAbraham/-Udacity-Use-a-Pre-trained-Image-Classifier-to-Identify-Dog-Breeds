@@ -43,12 +43,12 @@ def get_input_args():
     
     
    # Define command line arguments
-    parser.add_argument('--dir', type=str, default='pet_images', 
-                        help='Specify the directory containing pet images')
-    parser.add_argument('--arch', type=str, default='vgg', 
-                        help='Specify the CNN model architecture to use')
-    parser.add_argument('--dogfile', type=str, default='dognames.txt', 
-                        help='Specify the file containing dog names')
+    parser.add_argument('--dir', type=str, default='pet_images',
+                        help='Path to the image folder')
+    parser.add_argument('--arch', type=str, default='vgg',
+                        help='CNN Model Architecture')
+    parser.add_argument('--dogfile', type=str, default='dognames.txt',
+                        help='Text file with dog names')
     
     
     # Parse the arguments and return the collection
